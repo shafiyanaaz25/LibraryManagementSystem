@@ -4,6 +4,9 @@ from django.db import models
 
 
 class Student(models.Model):
+    """
+    Stores a single student entry
+    """
     roll_number = models.CharField(max_length=200, unique=True)
     name = models.CharField(max_length=100)
     email = models.CharField(max_length=200)
@@ -14,6 +17,9 @@ class Student(models.Model):
 
 
 class Book(models.Model):
+    """
+    Stores a single book entry
+    """
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=200)
     description = models.CharField(max_length=2000)
@@ -24,6 +30,9 @@ class Book(models.Model):
 
 
 class BookIssue(models.Model):
+    """
+    Stores a single issued book entry, related to model book and model student
+    """
     student = models.ForeignKey('Student', on_delete=models.CASCADE)
     book = models.ForeignKey('Book', on_delete=models.CASCADE)
     issue_date = models.DateField(auto_now=True)

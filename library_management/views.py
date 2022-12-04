@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from .models import Book, Student, BookIssue
-from .serializers import BookSerializer, BookIssueSerializer, StudentSerializer
+from .serializers import BookSerializer, StudentSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,16 +9,21 @@ from rest_framework import status
 
 # Create your views here.
 
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def view_all_books(request):
-    if request.method == 'GET':
-        books = Book.objects.all()
-        serializer = BookSerializer(books, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    """
+    GET request to view all the books present in the DB currently
+    """
+    books = Book.objects.all()
+    serializer = BookSerializer(books, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 @api_view(['POST'])
 def add_book(request):
+    """
+    Takes in a json object to add new book with all the fields of the model book and adds this entry to the DB
+    """
     serializer = BookSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -29,6 +34,9 @@ def add_book(request):
 
 @api_view(['POST'])
 def add_student(request):
+    """
+    Takes in a json object to add new student with all the fields of the model student and adds this entry to the DB
+    """
     serializer = StudentSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
@@ -39,6 +47,9 @@ def add_student(request):
 
 @api_view(['GET'])
 def view_all_students(request):
+    """
+     GET request to view all the students present in the DB currently
+    """
     students = Student.objects.all()
     serializer = StudentSerializer(students, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
@@ -46,6 +57,10 @@ def view_all_students(request):
 
 @api_view(['POST'])
 def check_out(request):
+    """
+    POST request with book_id, student_id in request body and if that book's available quantity is more than 0,
+    then checks out that book to the given student.
+    """
     book_id = request.data['book_id']
     student_id = request.data['student_id']
     try:
@@ -71,6 +86,9 @@ def check_out(request):
 
 @api_view(['PUT'])
 def check_in(request):
+    """
+    Takes in book_id and student_id in request body to return a book that was already borrowed
+    """
     book_id = request.data['book_id']
     student_id = request.data['student_id']
     try:
@@ -98,6 +116,10 @@ def check_in(request):
 
 @api_view(['PUT'])
 def update_checkin(request):
+    """
+    Takes book_id of the book to be returned and book_id of the new book to be issued and the student_id in request
+    body and checks in the book returned and checks out the book issued.
+    """
     return_book_id = request.data['return_book_id']
     new_book_id = request.data['new_book_id']
     try:
@@ -138,6 +160,12 @@ def update_checkin(request):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def get_book_details_by_id(request, id):
+    """
+    Based on the request type, takes action.
+    If it is a GET request, it displays the book with the given id.
+    If it is a PUT request, it updates the book with the given id to data given in request body.
+    If it is a DELETE request, it deletes the book with the given id.
+    """
     try:
         book = Book.objects.get(pk=id)
     except Book.DoesNotExist:
@@ -158,6 +186,12 @@ def get_book_details_by_id(request, id):
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def get_student_details_by_id(request, id):
+    """
+    Based on the request type, takes action.
+    If it is a GET request, it displays the student with the given id.
+    If it is a PUT request, it updates the student with the given id to data given in request body.
+    If it is a DELETE request, it deletes the student with the given id.
+    """
     try:
         student = Student.objects.get(pk=id)
     except Student.DoesNotExist:
@@ -178,6 +212,9 @@ def get_student_details_by_id(request, id):
 
 @api_view(['DELETE'])
 def delete_book(request, id):
+    """
+    Deletes the book with the given id
+    """
     try:
         book = Book.objects.get(pk=id)
     except Book.DoesNotExist:
@@ -188,6 +225,9 @@ def delete_book(request, id):
 
 @api_view(['DELETE'])
 def delete_student(request, id):
+    """
+    Deletes the student with the given id
+    """
     try:
         student = Student.objects.get(pk=id)
     except Student.DoesNotExist:
@@ -198,6 +238,9 @@ def delete_student(request, id):
 
 @api_view(['PUT'])
 def update_book_details(request, id):
+    """
+    Updates the book with the given id to data given in request body.
+    """
     try:
         book = Book.objects.get(pk=id)
     except Book.DoesNotExist:
@@ -211,6 +254,9 @@ def update_book_details(request, id):
 
 @api_view(['PUT'])
 def update_student_details(request, id):
+    """
+    Updates the student with the given id to data given in request body.
+    """
     try:
         student = Student.objects.get(pk=id)
     except Book.DoesNotExist:
@@ -224,6 +270,10 @@ def update_student_details(request, id):
 
 @api_view(['GET'])
 def get_all_books_with_filters(request):
+    """
+    Takes in student_name, book_name and checkout_date as request body and returns the list of titles of books that
+    satisfy the given filters.
+    """
     student_name = request.GET.get('student_name')
     book_name = request.GET.get('book_name')
     checkout_date = request.GET.get('checkout_date')
