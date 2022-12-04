@@ -16,6 +16,4 @@ urlpatterns = [
     path('update_book_details/<int:id>', views.update_book_details),
     path('update_student_details/<int:id>', views.update_student_details),
     path('update_check_in/', views.update_checkin),
-
-    # (r'^user/(?P<username>\w{0,50})/$', views.profile_page,),
 ]
