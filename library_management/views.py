@@ -4,8 +4,11 @@ from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.http import JsonResponse
+from django.core import serializers as core_serializers
+
+from . import serializers
 from .models import Book, Student, BookIssue
-from .serializers import BookSerializer, BookIssueSerializer, StudentSerializer
+from .serializers import BookSerializer, BookIssueSerializer, StudentSerializer, FilterBookSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -200,7 +203,6 @@ def get_all_books_with_filters(request):
     books_issued = BookIssue.objects.filter(book_id=book.pk, student_id=student.pk, issue_date=checkout_date)
     books_checked_out = []
     for book_issued in books_issued:
-        books_checked_out.append(book_issued.book)
-    # serializer = BookSerializer(books, many=True)
-    return JsonResponse(json.dumps(books_checked_out), safe=False, status=status.HTTP_200_OK)
-    # return Response({"Books": books_checked_out}, status=status.HTTP_200_OK)
+        books_checked_out.append(book_issued.book.title)
+    response = {"Books": books_checked_out}
+    return Response(response, status=status.HTTP_200_OK)
