@@ -20,9 +20,3 @@ class StudentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
         fields = ['id', 'roll_number', 'name', 'email', 'department']
-
-
-class FilterBookSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Book
-        fields = ['name']
