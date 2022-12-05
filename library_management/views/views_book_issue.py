@@ -34,6 +34,10 @@ def check_in(request):
     except Book.DoesNotExist:
         return Response({"Message": f"Book with id {book_id} not found in DB"}, status=status.HTTP_404_NOT_FOUND)
     try:
+        student = Student.objects.get(id=student_id)
+    except Student.DoesNotExist:
+        return Response({"Message": "Student not found in DB"}, status=status.HTTP_404_NOT_FOUND)
+    try:
         book_issued = BookIssue.objects.filter(book_id=book_id, student_id=student_id, status="Borrowed").first()
     except BookIssue.DoesNotExist:
         return Response({"Error": "No books issued currently"}, status=status.HTTP_404_NOT_FOUND)
@@ -52,6 +56,11 @@ def update_checkin(request):
         return_book = Book.objects.get(pk=return_book_id)
     except Book.DoesNotExist:
         return Response({"Message": f"Return Book not found in DB"}, status=status.HTTP_404_NOT_FOUND)
+    new_book_id = request.data['new_book_id']
+    try:
+        new_book = Book.objects.get(pk=new_book_id)
+    except Book.DoesNotExist:
+        return Response({"Message": f"New Book not found in DB"}, status=status.HTTP_404_NOT_FOUND)
     student_id = request.data['student_id']
     try:
         student = Student.objects.get(id=student_id)
@@ -61,15 +70,11 @@ def update_checkin(request):
         book_issued = BookIssue.objects.filter(book_id=return_book_id, student_id=student_id, status="Borrowed").first()
     except BookIssue.DoesNotExist:
         return Response({"Error": "No books issued currently"}, status=status.HTTP_404_NOT_FOUND)
+    if book_issued is None:
+        return Response({"Error": "No books issued currently"}, status=status.HTTP_404_NOT_FOUND)
     response = check_in_book_for_student(return_book, book_issued)
     if response.status_code != status.HTTP_200_OK:
         return response
-
-    new_book_id = request.data['new_book_id']
-    try:
-        new_book = Book.objects.get(pk=new_book_id)
-    except Book.DoesNotExist:
-        return Response({"Message": f"New Book not found in DB"}, status=status.HTTP_404_NOT_FOUND)
     response = check_out_book_for_student(new_book_id, student_id)
     if response.status_code != status.HTTP_201_CREATED:
         return response

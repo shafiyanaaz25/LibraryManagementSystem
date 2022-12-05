@@ -33,7 +33,9 @@ Sample Request Body :
 {\
 "title" : "Think and Grow Rich",\
 "author" : "Napolean Hill",\
-"description" : "Some people see it as one of the best books of all time to pull you out of depression. It will help you see the positive side of things in life. It will help you realize the person you are deep inside of letting you focus on the negative side of life.",\
+"description" : "Some people see it as one of the best books of all time to pull you out of depression. It will help you
+see the positive side of things in life. It will help you realize the person you are deep inside of letting you focus on
+the negative side of life.",\
 "quantity_available" : 10\
 }
 
@@ -50,10 +52,9 @@ Sample Request Body :
 "student_id" : 1\
 }
 
-
 <b><u>check_in (PUT request)</b></u>
 
-Returns a book to the library. 
+Returns a book to the library.
 
 http://127.0.0.1:8000/library_management/check_in/
 
@@ -68,22 +69,20 @@ Sample Request Body :
 
 Filters checked_out books based on book_name, student_name and checkout_date
 
-http://127.0.0.1:8000/library_management/filter_books/?book_name=Think and Grow Rich 1&student_name=Shafiya Naaz&checkout_date=2022-12-04
+http://127.0.0.1:8000/library_management/filter_books/?book_name=Think and Grow Rich 1&student_name=Shafiya
+Naaz&checkout_date=2022-12-04
 
+<b><u>book_by_id (GET request)</b></u>
 
-<b><u>book_by_id (GET, PUT, DELETE request)</b></u>
-
-Get, update, delete book by book_id :
+Get book by book_id :
 
 http://127.0.0.1:8000/library_management/book_by_id/<book_id>
 
+<b><u>student_by_id (GET request)</b></u>
 
-<b><u>student_by_id (GET, PUT, DELETE request)</b></u>
-
-Get, update, delete student by student_id :
+Get student by student_id :
 
 http://127.0.0.1:8000/library_management/student_by_id/<student_id>
-
 
 <b><u> delete_book (DELETE request) </b></u>
 
@@ -91,13 +90,11 @@ Deletes book by book id :
 
 http://127.0.0.1:8000/library_management/delete_book/<book_id>
 
-
 <b><u> delete_student (DELETE request) </b></u>
 
 Deletes student by student id :
 
 http://127.0.0.1:8000/library_management/delete_student/<student_id>
-
 
 <b><u> update_book_details (PUT request) </u></b>
 
@@ -105,13 +102,15 @@ Updates book details by given book id :
 
 http://127.0.0.1:8000/library_management/update_book_details/<book_id>
 
-Sample request body : 
+Sample request body :
 
 {\
 "id": 3,\
 "title": "Think and Grow Rich",\
 "author": "abc",\
-"description": "Some people see it as one of the best books of all time to pull you out of depression. It will help you see the positive side of things in life. It will help you realize the person you are deep inside of letting you focus on the negative side of life.",\
+"description": "Some people see it as one of the best books of all time to pull you out of depression. It will help you
+see the positive side of things in life. It will help you realize the person you are deep inside of letting you focus on
+the negative side of life.",\
 "quantity_available": 10\
 }
 

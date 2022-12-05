@@ -29,30 +29,17 @@ def add_book(request):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['GET'])
 def get_book_details_by_id(request, id):
     """
-    Based on the request type, takes action.
-    If it is a GET request, it displays the book with the given id.
-    If it is a PUT request, it updates the book with the given id to data given in request body.
-    If it is a DELETE request, it deletes the book with the given id.
+    It displays the book with the given id.
     """
     try:
         book = Book.objects.get(pk=id)
     except Book.DoesNotExist:
         return Response({"Message": "Book not found in DB"}, status=status.HTTP_404_NOT_FOUND)
-    if request.method == 'GET':
-        serializer = BookSerializer(book)
-        return Response(serializer.data)
-    elif request.method == 'PUT':
-        serializer = BookSerializer(book, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'DELETE':
-        book.delete()
-        return Response({"Message": "Book with given id deleted successfully"}, status=status.HTTP_204_NO_CONTENT)
+    serializer = BookSerializer(book)
+    return Response(serializer.data)
 
 
 @api_view(['DELETE'])
