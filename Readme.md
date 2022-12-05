@@ -105,7 +105,6 @@ http://127.0.0.1:8000/library_management/update_book_details/<book_id>
 Sample request body :
 
 {\
-"id": 3,\
 "title": "Think and Grow Rich",\
 "author": "abc",\
 "description": "Some people see it as one of the best books of all time to pull you out of depression. It will help you
@@ -123,7 +122,6 @@ http://127.0.0.1:8000/library_management/update_student_details/<student_id>
 Sample request body :
 
 {\
-"id": 1,\
 "roll_number": "1",\
 "name": "xyz",\
 "email": "xyz@gmail.com",\
@@ -138,6 +136,7 @@ body and checks in the book returned and checks out the book issued :
 http://127.0.0.1:8000/library_management/update_check_in/
 
 Sample request body :
+
 {\
 "return_book_id" : 4,\
 "new_book_id" : 3,\
