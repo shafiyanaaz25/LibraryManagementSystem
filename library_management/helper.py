@@ -54,11 +54,13 @@ def check_out_book_for_student(book_id, student_id):
 
 
 def check_in_book_for_student(book, book_issued):
-    book_issue_object = BookIssue.objects.get(id=book_issued.id)
-    book_issue_object.status = "Returned"
-    book_issue_object.return_date = datetime.today().date()
-    book_issue_object.quantity_issued -= 1
-    book.quantity_available += 1
-    book.save()
-    book_issue_object.save()
-    return Response({"Message": "Book returned successfully"}, status=status.HTTP_200_OK)
+    if book_issued is not None:
+        book_issue_object = BookIssue.objects.get(id=book_issued.id)
+        book_issue_object.status = "Returned"
+        book_issue_object.return_date = datetime.today().date()
+        book_issue_object.quantity_issued -= 1
+        book.quantity_available += 1
+        book.save()
+        book_issue_object.save()
+        return Response({"Message": "Book returned successfully"}, status=status.HTTP_200_OK)
+    return Response({"Error": "No book with the given student and book combo"}, status=status.HTTP_404_NOT_FOUND)
