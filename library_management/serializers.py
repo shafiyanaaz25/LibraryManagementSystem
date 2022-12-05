@@ -1,5 +1,7 @@
 from rest_framework import serializers, fields
-from .models import Book, BookIssue, Student
+from .models.book import Book
+from .models.student import Student
+from .models.book_issue import BookIssue
 
 
 class BookSerializer(serializers.ModelSerializer):
